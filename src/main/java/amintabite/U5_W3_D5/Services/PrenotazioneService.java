@@ -58,7 +58,7 @@ public class PrenotazioneService {
         Evento evento = found.getEvento();
 
         evento.setNPosti(evento.getNPosti() + 1);
-        
+
         eventoRepository.save(evento);
 
         prenotazioneRepository.delete(found);

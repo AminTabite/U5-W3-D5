@@ -23,8 +23,8 @@ public class AuthorizationController {
     private UtenteService utenteService;
 
 @PostMapping("/login")
-    public LoginPayload login(@RequestBody LoginPayload body){
-    return new LoginPayload(authorizationService.CheckCredentialAndDoToken(body));
+    public TokenPayload login(@RequestBody LoginPayload body){
+    return new TokenPayload(authorizationService.CheckCredentialAndDoToken(body));
 }
 
 
