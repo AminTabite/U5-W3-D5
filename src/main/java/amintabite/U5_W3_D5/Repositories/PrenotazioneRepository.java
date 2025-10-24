@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 import java.util.UUID;
 
 @Repository
-public interface PrenotazioneRepository extends JpaRepository<UUID, Prenotazione> {
+public interface PrenotazioneRepository extends JpaRepository< Prenotazione, UUID> {
 
 }
