@@ -7,7 +7,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
@@ -16,7 +20,7 @@ import java.util.UUID;
 @Getter
 @NoArgsConstructor
 @Entity
-public class Utente {
+public class Utente implements UserDetails {
 
     @Id
     @GeneratedValue
@@ -40,11 +44,36 @@ public class Utente {
         this.ruolo = Ruolo.ClIENTE;
     }
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        // Questo metodo vogliamo che restituisca una lista di Authorities, cioè dei ruoli dell'utente
-        // SimpleGrantedAuthority è una classe che implementa GrantedAuthority e ci serve per convertire il ruolo dell'utente
-        // che nel nostro caso è un enum in un oggetto utilizzabile dai meccanismi di Spring Security
-        return List.of(new SimpleGrantedAuthority(this.role.name()));
 
+
+   @Override
+ public Collection<? extends GrantedAuthority> getAuthorities() {
+
+       return List.of(new SimpleGrantedAuthority(this.ruolo.name()));
+   }
+
+    @Override
+    public String getUsername() {
+        return "";
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return UserDetails.super.isAccountNonExpired();
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return UserDetails.super.isAccountNonLocked();
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return UserDetails.super.isCredentialsNonExpired();
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return UserDetails.super.isEnabled();
+    }
 }

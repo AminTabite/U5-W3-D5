@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -19,6 +20,8 @@ import java.util.UUID;
 public class UtenteService {
     @Autowired
     UtenteRepository utenteRepository;
+    @Autowired
+    private PasswordEncoder bcrypt;
 
     public Page<Utente> findAll(int pageNumber, int pageSize, String sortBy) {
         if (pageSize > 5) pageSize = 5; // se vuoi limitare a 5

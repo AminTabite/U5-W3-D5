@@ -52,10 +52,11 @@ public class JWTfilter extends OncePerRequestFilter {
         // 1.2 findById
         Utente found = utenteService.findById(UtenteId);
 
+        Authentication authentication = new UsernamePasswordAuthenticationToken(
+                found, null, found.getRuoli() // o found.getAuthorities()
+        );
+        SecurityContextHolder.getContext().setAuthentication(authentication);
 
-
-//        Authentication authentication = new UsernamePasswordAuthenticationToken(found, null, found.getAuthorities());
-//        SecurityContextHolder.getContext().setAuthentication(authentication);
 
         filterChain.doFilter(request, response);
 
