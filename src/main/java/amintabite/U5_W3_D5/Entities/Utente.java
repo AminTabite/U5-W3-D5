@@ -37,6 +37,14 @@ public class Utente {
         this.cognome = cognome;
         this.email = email;
         this.password = password;
-        this.ruolo = ruolo;
+        this.ruolo = Ruolo.ClIENTE;
     }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        // Questo metodo vogliamo che restituisca una lista di Authorities, cioè dei ruoli dell'utente
+        // SimpleGrantedAuthority è una classe che implementa GrantedAuthority e ci serve per convertire il ruolo dell'utente
+        // che nel nostro caso è un enum in un oggetto utilizzabile dai meccanismi di Spring Security
+        return List.of(new SimpleGrantedAuthority(this.role.name()));
+
 }

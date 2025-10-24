@@ -1,6 +1,8 @@
 package amintabite.U5_W3_D5.Security;
 
 
+
+
 import amintabite.U5_W3_D5.Entities.Utente;
 import amintabite.U5_W3_D5.Exceptions.UnauthorizedException;
 import amintabite.U5_W3_D5.Services.UtenteService;
@@ -52,8 +54,8 @@ public class JWTfilter extends OncePerRequestFilter {
 
 
 
-        Authentication authentication = new UsernamePasswordAuthenticationToken(found, null, found.getAuthorities());
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+//        Authentication authentication = new UsernamePasswordAuthenticationToken(found, null, found.getAuthorities());
+//        SecurityContextHolder.getContext().setAuthentication(authentication);
 
         filterChain.doFilter(request, response);
 
@@ -69,4 +71,3 @@ public class JWTfilter extends OncePerRequestFilter {
 
 
 }
-
