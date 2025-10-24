@@ -66,39 +66,34 @@ public class UtenteController {
     public void deleteUtente(@PathVariable UUID utenteid){
         utenteService.FindByIdAndDelete(utenteid);
 
+    }
 
-        ///  endpoint me per gli utenti che devono interagire con il loro stesso profilo
+    //endpoint per i clienti semplici
+
+    @GetMapping("/me")
+    public Utente getMyProfile(@AuthenticationPrincipal Utente currentUser) {
+        return utenteService.findById(currentUser.getUtenteId());
+    }
 
 
-
-
-        // 🔹 Visualizza il proprio profilo
-        @GetMapping("/me")
-        public Utente getMyProfile(@AuthenticationPrincipal Utente currentUser) {
-            return utenteService.findById(currentUser.getUtenteId());
+    @PutMapping("/me")
+    public Utente updateMyProfile(@AuthenticationPrincipal Utente currentUser,
+                                  @RequestBody @Validated UtentePayload payload,BindingResult validationResult) {
+        if (validationResult.hasErrors()) {
+            throw new ValidationsException(validationResult.getFieldErrors()
+                    .stream()
+                    .map(fieldError -> fieldError.getDefaultMessage())
+                    .toList());
         }
+        return utenteService.FindByIdAndUpdate(currentUser.getUtenteId(), payload);
+    }
 
-        // 🔹 Aggiorna il proprio profilo
-        @PutMapping("/me")
-        public Utente updateMyProfile(@AuthenticationPrincipal Utente currentUser,
-                @RequestBody @Validated UtentePayload payload,
-                BindingResult validationResult) {
-            if (validationResult.hasErrors()) {
-                throw new ValidationsException(validationResult.getFieldErrors()
-                        .stream()
-                        .map(fieldError -> fieldError.getDefaultMessage())
-                        .toList());
-            }
-            return utenteService.FindByIdAndUpdate(currentUser.getUtenteId(), payload);
-        }
 
-        // 🔹 Elimina il proprio account
-        @DeleteMapping("/me")
-        @ResponseStatus(HttpStatus.NO_CONTENT)
-        public void deleteMyProfile(@AuthenticationPrincipal Utente currentUser) {
-            utenteService.FindByIdAndDelete(currentUser.getUtenteId());
-        }
 
+    @DeleteMapping("/me")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteMyProfile(@AuthenticationPrincipal Utente currentUser) {
+        utenteService.FindByIdAndDelete(currentUser.getUtenteId());
     }
 
 

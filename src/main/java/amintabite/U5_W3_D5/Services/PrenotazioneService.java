@@ -10,6 +10,10 @@ import amintabite.U5_W3_D5.Repositories.EventoRepository;
 import amintabite.U5_W3_D5.Repositories.PrenotazioneRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -26,10 +30,21 @@ public class PrenotazioneService {
     private EventoRepository eventoRepository;
 
 
+    public Page<Prenotazione> findAll(int page, int size, String sortBy) {
+        if (size > 20) size = 20;
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
+
+        return prenotazioneRepository.findAll(pageable);
+
+    }
+
+
+
+
     public Prenotazione savePrenotazione(UUID eventoId, Utente user) {
         Evento evento = eventoRepository.findById(eventoId)
                 .orElseThrow(() -> new NotFoundException("Evento non trovato con id: " + eventoId));
-
 
         if (evento.getNPosti() <= 0) {
             throw new IllegalStateException("Nessun posto disponibile per questo evento!");
@@ -65,6 +80,18 @@ public class PrenotazioneService {
 
 
 
-        log.info("Prenotazione {} eliminata. Posto liberato per evento: {}", prenotazioneId, evento.getTitolo());
+        log.info("Prenotazione  eliminata Posto liberato", prenotazioneId, evento.getTitolo());
     }
+
+
+
+    public Page<Prenotazione> findByUser(Utente user, int page, int size, String sortBy) {
+        if (size > 20) size = 20;
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
+
+        return prenotazioneRepository.findByUser(user, pageable);
+    }
+
+
 }
